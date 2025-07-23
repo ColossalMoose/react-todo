@@ -1,20 +1,29 @@
 import { useState } from "react";
 
-function TodoForm () {
+interface Props{
+    onAdd: (text: string) => void;
+}
+
+function TodoForm ({ onAdd }: Props) {
 
     const [inputValue, setInputValue] = useState<string>('');
     
-    const handleinput = (event: React.ChangeEvent<HTMLInputElement>) => {
-                setInputValue(event.target.value);
-    }
+     const handleSubmit = (event: React.FormEvent) => {
+        if (!inputValue.trim()) return;
+        onAdd(inputValue);
+        setInputValue("");
+        event.preventDefault();
+    };
+
     return(
-    <form>
+    <form onSubmit={handleSubmit}>
         <h1>What you got going on?</h1>
         <input
             className="InputBox"
             value={inputValue}
-            onChange={handleinput}
+            onChange={(e) => setInputValue(e.target.value)}
             placeholder='Add task...'/>
+            <button type="submit">Add</button>
     </form>)
 }
 
